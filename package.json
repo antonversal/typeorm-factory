@@ -1,0 +1,17 @@
+{
+  "name": "typeorm-factory",
+  "version": "0.0.1",
+  "description": "A factory library for typeorm",
+  "main": "index.js",
+  "repository": "https://github.com/antonversal/typeorm-factory.git",
+  "author": "Anton Versal <ant.ver@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "typeorm": "^0.1.2"
+  },
+  "devDependencies": {
+    "jest-cli": "^21.2.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1"
+  }
+}
