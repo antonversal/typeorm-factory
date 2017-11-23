@@ -6,11 +6,31 @@
   "repository": "https://github.com/antonversal/typeorm-factory.git",
   "author": "Anton Versal <ant.ver@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "yarn test --watch"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
   "dependencies": {
     "typeorm": "^0.1.2"
   },
   "devDependencies": {
     "jest-cli": "^21.2.1",
+    "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1"
   }
