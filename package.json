@@ -22,14 +22,19 @@
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      "/fixtures/",
+      "/support/"
     ]
   },
   "dependencies": {
     "typeorm": "^0.1.2"
   },
   "devDependencies": {
+    "@types/jest": "^21.1.8",
     "jest-cli": "^21.2.1",
+    "pg": "^7.4.0",
+    "reflect-metadata": "^0.1.10",
     "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1"
