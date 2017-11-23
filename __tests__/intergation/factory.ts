@@ -46,10 +46,46 @@ describe("Factory Test", () => {
     });
 
     describe("attr", () => {
-      it("retuns attribute value", () => {
+      it("returns attribute value", () => {
         expect(PostFactory.build().likesCount).toEqual(10);
         expect(PostFactory.build().postType).toEqual(PostType.TEXT);
       });
     });
+  });
+
+  describe("create", () => {
+    it("creates an record in db", async () => {
+      const createObject = await PostFactory.create();
+      expect(createObject.id).toBeDefined();
+    });
+  });
+
+  describe("createList", () => {
+    it("creates an array of object", async () => {
+      const createdObjects = await PostFactory.createList(3);
+      expect(createdObjects.length).toEqual(3);
+    });
+  });
+
+  describe("buildList", () => {
+    it("builds an array of objects", async () => {
+      const createdObjects = await PostFactory.buildList(3);
+      expect(createdObjects.length).toEqual(3);
+    });
+  });
+
+  it("builds association", () => {
+    const object = PostFactory.build();
+    expect(object.comments.length).toEqual(2);
+  });
+
+  it("creates association", async () => {
+    const object = await PostFactory.create();
+    expect(object.comments.length).toEqual(2);
+  });
+
+  it("accepts attributes", () => {
+    const object = PostFactory.build({ title: "new title" });
+    expect(object.title).toEqual("new title");
   });
 });
