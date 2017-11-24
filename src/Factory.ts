@@ -13,6 +13,7 @@ export type Attr<U> = [keyof U,
   AssocManyAttribute<any> |
   AssocOneAttribute<U[keyof U]> |
   FactoryAttribute<any>];
+
 export type Attrs<U> = Array<Attr<U>>;
 
 export class Factory<T> {
@@ -30,30 +31,31 @@ export class Factory<T> {
     return this.privateRepository;
   }
 
-  public clone() {
+  public clone(): Factory<T> {
     const clonedAttrs = this.attrs.map<Attr<T>>(([name, obj]) => [name, obj.clone()]);
     return new Factory<T>(this.Obj, clonedAttrs);
   }
-  public sequence(name: keyof T, seqFunc: (i: number) => T[keyof T]) {
+
+  public sequence<K extends keyof T>(name: K, seqFunc: (i: number) => T[K]): Factory<T> {
     this.attrs.push([name, new Sequence<T[keyof T]>(seqFunc)]);
     return this;
   }
 
-  public attr(name: keyof T, value: T[keyof T]) {
+  public attr<K extends keyof T>(name: K, value: T[K]): Factory<T> {
     const clonedFactory = this.clone();
     clonedFactory.attrs.push([name, new FactoryAttribute<T[keyof T]>(value)]);
     return clonedFactory;
   }
 
-  public assocMany<U>(name: keyof T, factory: Factory<U>, size: number = 1) {
+  public assocMany<K extends keyof T>(name: K, factory: Factory<T[K]>, size: number = 1): Factory<T> {
     const clonedFactory = this.clone();
-    clonedFactory.attrs.push([name, new AssocManyAttribute<U>(factory, size)]);
+    clonedFactory.attrs.push([name, new AssocManyAttribute(factory, size)]);
     return clonedFactory;
   }
 
-  public assocOne(name: keyof T, factory: Factory<T[keyof T]>) {
+  public assocOne<K extends keyof T>(name: K, factory: Factory<T[K]>): Factory<T> {
     const clonedFactory = this.clone();
-    clonedFactory.attrs.push([name, new AssocOneAttribute<T[keyof T]>(factory)]);
+    clonedFactory.attrs.push([name, new AssocOneAttribute(factory)]);
     return clonedFactory;
   }
 
