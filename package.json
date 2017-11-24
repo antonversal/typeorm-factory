@@ -5,6 +5,13 @@
   "main": "index.js",
   "repository": "https://github.com/antonversal/typeorm-factory.git",
   "author": "Anton Versal <ant.ver@gmail.com>",
+  "keywords": [
+    "typeorm",
+    "factory",
+    "typescript",
+    "javascript",
+    "orm"
+  ],
   "license": "MIT",
   "scripts": {
     "test": "jest",
