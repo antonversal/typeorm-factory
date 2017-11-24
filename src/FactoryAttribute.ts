@@ -1,16 +1,20 @@
 
 export class FactoryAttribute<T> {
-  private readonly attrValue: T
+  private readonly attrValue: T;
 
   constructor(value: T) {
-    this.attrValue = value
+    this.attrValue = value;
   }
 
   public value(): T {
-    return this.attrValue
+    return this.attrValue;
   }
 
   public asyncValue(): T {
-    return this.value()
+    return this.value();
+  }
+
+  public clone() {
+    return new FactoryAttribute<T>(this.attrValue);
   }
 }

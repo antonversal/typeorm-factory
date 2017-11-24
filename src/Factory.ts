@@ -8,11 +8,12 @@ export interface IConstructable<T> {
   new(): T;
 }
 
-export type Attrs<U> = Array<[keyof U,
+export type Attr<U> = [keyof U,
   Sequence<U[keyof U]> |
   AssocManyAttribute<any> |
   AssocOneAttribute<U[keyof U]> |
-  FactoryAttribute<any>]>;
+  FactoryAttribute<any>];
+export type Attrs<U> = Array<Attr<U>>;
 
 export class Factory<T> {
   public Obj: IConstructable<T>;
@@ -30,26 +31,30 @@ export class Factory<T> {
   }
 
   public clone() {
-    return new Factory<T>(this.Obj, this.attrs);
+    const clonedAttrs = this.attrs.map<Attr<T>>(([name, obj]) => [name, obj.clone()]);
+    return new Factory<T>(this.Obj, clonedAttrs);
   }
   public sequence(name: keyof T, seqFunc: (i: number) => T[keyof T]) {
     this.attrs.push([name, new Sequence<T[keyof T]>(seqFunc)]);
-    return this.clone();
+    return this;
   }
 
   public attr(name: keyof T, value: T[keyof T]) {
-    this.attrs.push([name, new FactoryAttribute<T[keyof T]>(value)]);
-    return this.clone();
+    const clonedFactory = this.clone();
+    clonedFactory.attrs.push([name, new FactoryAttribute<T[keyof T]>(value)]);
+    return clonedFactory;
   }
 
   public assocMany<U>(name: keyof T, factory: Factory<U>, size: number = 1) {
-    this.attrs.push([name, new AssocManyAttribute<U>(factory, size)]);
-    return this.clone();
+    const clonedFactory = this.clone();
+    clonedFactory.attrs.push([name, new AssocManyAttribute<U>(factory, size)]);
+    return clonedFactory;
   }
 
   public assocOne(name: keyof T, factory: Factory<T[keyof T]>) {
-    this.attrs.push([name, new AssocOneAttribute<T[keyof T]>(factory)]);
-    return this.clone();
+    const clonedFactory = this.clone();
+    clonedFactory.attrs.push([name, new AssocOneAttribute<T[keyof T]>(factory)]);
+    return clonedFactory;
   }
 
   public build(attributes: {[k in keyof T]?: T[k]} = {}): T {

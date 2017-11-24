@@ -1,4 +1,5 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Author } from "./Author";
 import { Comment } from "./Comment";
 
 export enum PostType {
@@ -26,4 +27,7 @@ export class Post {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   public comments: Comment[];
+
+  @ManyToOne(() => Author, (author) => author.posts)
+  public author: Author;
 }
