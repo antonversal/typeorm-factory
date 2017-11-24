@@ -4,6 +4,9 @@
   "description": "A factory library for typeorm",
   "main": "index.js",
   "repository": "https://github.com/antonversal/typeorm-factory.git",
+  "bugs": {
+    "url": "https://github.com/antonversal/typeorm-factory/issues"
+  },
   "author": "Anton Versal <ant.ver@gmail.com>",
   "keywords": [
     "typeorm",
@@ -35,7 +38,7 @@
     ]
   },
   "dependencies": {
-    "typeorm": "^0.1.2"
+    "typeorm": "^0.1.6"
   },
   "devDependencies": {
     "@types/jest": "^21.1.8",

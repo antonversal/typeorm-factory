@@ -2696,9 +2696,9 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-typeorm@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.1.2.tgz#ebcba19f8e01828b3f19441d1fec090c678a417e"
+typeorm@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.1.6.tgz#77c385b4ef0a267a145da62989a369f741beb23d"
   dependencies:
     app-root-path "^2.0.1"
     chalk "^2.0.1"
