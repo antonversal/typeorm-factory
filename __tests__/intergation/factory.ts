@@ -1,12 +1,14 @@
-import { createConnection } from "typeorm";
+import { Connection, createConnection } from "typeorm";
 import { Factory } from "../../src/Factory";
 import { Author } from "../fixtures/entity/Author";
 import { Comment } from "../fixtures/entity/Comment";
 import { Post, PostType } from "../fixtures/entity/Post";
 import { clean } from "../support/cleaner";
 
+let connection: Connection;
+
 beforeAll(async () => {
-  await createConnection({
+  connection = await createConnection({
     type: "postgres",
     host: "localhost",
     port: 5432,
@@ -16,6 +18,8 @@ beforeAll(async () => {
   });
   await clean();
 });
+
+afterAll(() => connection.close());
 
 afterEach(() => clean);
 
