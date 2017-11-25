@@ -1,8 +1,8 @@
 {
   "name": "typeorm-factory",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A factory library for typeorm",
-  "main": "index.js",
+  "main": "build/index.js",
   "repository": "https://github.com/antonversal/typeorm-factory.git",
   "bugs": {
     "url": "https://github.com/antonversal/typeorm-factory/issues"
