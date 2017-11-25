@@ -1,8 +1,9 @@
 {
   "name": "typeorm-factory",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "A factory library for typeorm",
   "main": "build/index.js",
+  "typings": "build/index.d.ts",
   "repository": "https://github.com/antonversal/typeorm-factory.git",
   "bugs": {
     "url": "https://github.com/antonversal/typeorm-factory/issues"
@@ -18,10 +19,10 @@
   "license": "MIT",
   "scripts": {
     "lint": "tslint -p .",
-    "build": "tsc",
+    "build": "tsc -p tsconfigBuild.json",
     "test": "jest",
     "test:watch": "yarn test --watch",
-    "prepublish": "yarn build"
+    "prepare": "yarn build"
   },
   "jest": {
     "moduleFileExtensions": [
