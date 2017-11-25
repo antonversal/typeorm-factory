@@ -47,7 +47,8 @@ export class Factory<T> {
     return clonedFactory;
   }
 
-  public assocMany<K extends keyof T>(name: K, factory: Factory<T[K]>, size: number = 1): Factory<T> {
+  // here is any for factory attribute. Typescript does not understand T[K][0]
+  public assocMany<K extends keyof T>(name: K, factory: Factory<any>, size: number = 1): Factory<T> {
     const clonedFactory = this.clone();
     clonedFactory.attrs.push([name, new AssocManyAttribute(factory, size)]);
     return clonedFactory;
@@ -59,7 +60,7 @@ export class Factory<T> {
     return clonedFactory;
   }
 
-  public build(attributes: {[k in keyof T]?: T[k]} = {}): T {
+  public build(attributes: Partial<T> = {}): T {
     const ignoreKeys = Object.keys(attributes);
     const obj = this.assignAttrs(new this.Obj(), ignoreKeys);
     return this.assignPassedAttrs(obj, attributes);
@@ -69,7 +70,7 @@ export class Factory<T> {
     return Array.from({ length: size }, () => this.build());
   }
 
-  public async create(attributes: {[k in keyof T]?: T[k]} = {}): Promise<T> {
+  public async create(attributes: Partial<T> = {}): Promise<T> {
     const ignoreKeys = Object.keys(attributes);
     const obj = await this.assignAsyncAttrs(new this.Obj(), ignoreKeys);
     const objWithAttrs = this.assignPassedAttrs(obj, attributes);
