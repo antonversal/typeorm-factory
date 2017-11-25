@@ -1,6 +1,6 @@
 {
   "name": "typeorm-factory",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A factory library for typeorm",
   "main": "build/index.js",
   "repository": "https://github.com/antonversal/typeorm-factory.git",
@@ -43,9 +43,6 @@
   "peerDependencies": {
     "typeorm": "^0.1.6"
   },
-  "dependencies": {
-    "typeorm": "^0.1.6"
-  },
   "devDependencies": {
     "@types/jest": "^21.1.8",
     "@types/node": "^8.0.53",
@@ -54,6 +51,7 @@
     "reflect-metadata": "^0.1.10",
     "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
+    "typeorm": "^0.1.6",
     "typescript": "^2.6.1"
   }
 }

@@ -1,5 +1,4 @@
-import { getRepository } from "typeorm";
-import { Repository } from "typeorm/repository/Repository";
+import { getRepository, Repository } from "typeorm";
 import { AssocManyAttribute } from "./AssocManyAttribute";
 import { AssocOneAttribute } from "./AssocOneAttribute";
 import { FactoryAttribute } from "./FactoryAttribute";
