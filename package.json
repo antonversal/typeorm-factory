@@ -17,9 +17,11 @@
   ],
   "license": "MIT",
   "scripts": {
+    "lint": "tslint -p .",
     "build": "tsc",
     "test": "jest",
-    "test:watch": "yarn test --watch"
+    "test:watch": "yarn test --watch",
+    "prepublish": "yarn build"
   },
   "jest": {
     "moduleFileExtensions": [
