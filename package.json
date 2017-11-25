@@ -1,6 +1,6 @@
 {
   "name": "typeorm-factory",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A factory library for typeorm",
   "main": "build/index.js",
   "repository": "https://github.com/antonversal/typeorm-factory.git",
@@ -39,6 +39,9 @@
       "/fixtures/",
       "/support/"
     ]
+  },
+  "peerDependencies": {
+    "typeorm": "^0.1.6"
   },
   "dependencies": {
     "typeorm": "^0.1.6"
