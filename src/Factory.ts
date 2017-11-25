@@ -1,4 +1,5 @@
 import { getRepository } from "typeorm";
+import { Repository } from "typeorm/repository/Repository";
 import { AssocManyAttribute } from "./AssocManyAttribute";
 import { AssocOneAttribute } from "./AssocOneAttribute";
 import { FactoryAttribute } from "./FactoryAttribute";
@@ -19,7 +20,7 @@ export type Attrs<U> = Array<Attr<U>>;
 export class Factory<T> {
   public Obj: IConstructable<T>;
   public attrs: Attrs<T>;
-  private privateRepository: any;
+  private privateRepository: Repository<T>;
 
   constructor(Obj: IConstructable<T>, attrs?: Attrs<T> ) {
     this.Obj = Obj;
@@ -63,7 +64,7 @@ export class Factory<T> {
   public build(attributes: Partial<T> = {}): T {
     const ignoreKeys = Object.keys(attributes);
     const obj = this.assignAttrs(new this.Obj(), ignoreKeys);
-    return this.assignPassedAttrs(obj, attributes);
+    return this.repository.merge(obj, attributes as any);
   }
 
   public buildList(size: number): T[] {
@@ -73,8 +74,8 @@ export class Factory<T> {
   public async create(attributes: Partial<T> = {}): Promise<T> {
     const ignoreKeys = Object.keys(attributes);
     const obj = await this.assignAsyncAttrs(new this.Obj(), ignoreKeys);
-    const objWithAttrs = this.assignPassedAttrs(obj, attributes);
-    return this.repository.save(objWithAttrs);
+    const objWithAttrs = this.repository.merge(obj, attributes as any);
+    return this.repository.save(objWithAttrs as any);
   }
 
   public async createList(size: number): Promise<T[]> {
@@ -101,13 +102,5 @@ export class Factory<T> {
         return s;
       });
     }, Promise.resolve(obj));
-  }
-
-  private assignPassedAttrs(obj: T, attrs: {[k in keyof T]?: T[k]}) {
-    for (const key in attrs) {
-      const val = attrs[key];
-      if (val) { obj[key] = val; }
-    }
-    return obj;
   }
 }
