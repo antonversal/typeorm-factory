@@ -16,28 +16,31 @@ export type Attr<U> = [keyof U,
 
 export type Attrs<U> = Array<Attr<U>>;
 
+/**
+ * Factory defines attributes, sequences and associations
+ */
 export class Factory<T> {
-  public Obj: IConstructable<T>;
+  public Entity: IConstructable<T>;
   public attrs: Attrs<T>;
   private privateRepository: Repository<T>;
 
-  constructor(Obj: IConstructable<T>, attrs?: Attrs<T> ) {
-    this.Obj = Obj;
+  constructor(Entity: IConstructable<T>, attrs?: Attrs<T> ) {
+    this.Entity = Entity;
     this.attrs = attrs || [];
   }
 
   private get repository() {
-    this.privateRepository = this.privateRepository || getRepository(this.Obj);
+    this.privateRepository = this.privateRepository || getRepository(this.Entity);
     return this.privateRepository;
   }
 
   public clone(): Factory<T> {
-    const clonedAttrs = this.attrs.map<Attr<T>>(([name, obj]) => [name, obj.clone()]);
-    return new Factory<T>(this.Obj, clonedAttrs);
+    const clonedAttrs = this.attrs.map<Attr<T>>(([name, attr]) => [name, attr.clone()]);
+    return new Factory<T>(this.Entity, clonedAttrs);
   }
 
-  public sequence<K extends keyof T>(name: K, seqFunc: (i: number) => T[K]): Factory<T> {
-    this.attrs.push([name, new Sequence<T[keyof T]>(seqFunc)]);
+  public sequence<K extends keyof T>(name: K, sequenceFunction: (i: number) => T[K]): Factory<T> {
+    this.attrs.push([name, new Sequence<T[keyof T]>(sequenceFunction)]);
     return this;
   }
 
@@ -47,7 +50,7 @@ export class Factory<T> {
     return clonedFactory;
   }
 
-  // here is any for factory attribute. Typescript does not understand T[K][0]
+  // here is `any` for factory attribute. Typescript does not understand T[K][0]
   public assocMany<K extends keyof T>(name: K, factory: Factory<any>, size: number = 1): Factory<T> {
     const clonedFactory = this.clone();
     clonedFactory.attrs.push([name, new AssocManyAttribute(factory, size)]);
@@ -62,7 +65,7 @@ export class Factory<T> {
 
   public build(attributes: Partial<T> = {}): T {
     const ignoreKeys = Object.keys(attributes);
-    const obj = this.assignAttrs(new this.Obj(), ignoreKeys);
+    const obj = this.assignAttrs(new this.Entity(), ignoreKeys);
     return this.repository.merge(obj, attributes as any);
   }
 
@@ -72,7 +75,7 @@ export class Factory<T> {
 
   public async create(attributes: Partial<T> = {}): Promise<T> {
     const ignoreKeys = Object.keys(attributes);
-    const obj = await this.assignAsyncAttrs(new this.Obj(), ignoreKeys);
+    const obj = await this.assignAsyncAttrs(new this.Entity(), ignoreKeys);
     const objWithAttrs = this.repository.merge(obj, attributes as any);
     return this.repository.save(objWithAttrs as any);
   }
