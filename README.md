@@ -34,7 +34,7 @@ const PostFactory = new Factory(Post)
   .assocMany("comments", CommentFactory, 2)
   .assocOne("author", AuthorFactory);
 
-const build = () => {
+const build = async () => {
   console.log(await PostFactory.build())
   console.log(await PostFactory.build({ text: 'Foo' }))
   console.log(await PostFactory.buildList(10))
@@ -43,5 +43,6 @@ const build = () => {
   console.log(await PostFactory.createList(1))
 }
 
+build()
 ```
 
