@@ -30,7 +30,6 @@ const PostFactory = new Factory(Post)
   .sequence("title", (i) => `title ${i}`)
   .sequence("text", (i) => `text ${i}`)
   .attr("likesCount", 10)
-  .attr("postType", PostType.TEXT)
   .assocMany("comments", CommentFactory, 2)
   .assocOne("author", AuthorFactory);
 
