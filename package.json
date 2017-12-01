@@ -20,6 +20,7 @@
   "scripts": {
     "lint": "tslint -p .",
     "build": "tsc -p tsconfigBuild.json",
+    "test:ci": "jest --ci --testResultsProcessor=\"./node_modules/jest-junit-reporter\" --coverage",
     "test": "jest",
     "test:watch": "yarn test --watch",
     "prepare": "yarn build"
@@ -48,6 +49,7 @@
     "@types/jest": "^21.1.8",
     "@types/node": "^8.0.53",
     "jest-cli": "^21.2.1",
+    "jest-junit-reporter": "^1.1.0",
     "pg": "^7.4.0",
     "reflect-metadata": "^0.1.10",
     "ts-jest": "^21.2.3",
