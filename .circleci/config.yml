@@ -26,7 +26,7 @@ jobs:
           key: v1-node8-yarn-cache-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-  test_node_8:
+  test_node_9:
     docker:
       - image: node:9
       - image: circleci/postgres:9.5-alpine-ram
@@ -53,7 +53,8 @@ jobs:
           paths:
             - node_modules
   lint:
-    - image: node:8.9.1
+    docker:
+      - image: node:8.9.1
     steps:
       - checkout
       - restore_cache:
