@@ -1,5 +1,7 @@
 # typeorm-factory
 
+[![CircleCI](https://circleci.com/gh/antonversal/typeorm-factory/tree/master.svg?style=svg)](https://circleci.com/gh/antonversal/typeorm-factory/tree/master)
+
 `typeorm-factory` is a factory library for [typeorm](https://github.com/typeorm/typeorm). It supports all databases that uses typeorm's `Repository`, so it doesn't support `MongoDB`, a pull request are welcome.
 
 ## Installation
