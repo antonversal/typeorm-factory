@@ -3,6 +3,8 @@ jobs:
   test_node_8:
     docker:
       - image: node:8
+        environment:
+          PG_USERNAME: pguser
       - image: circleci/postgres:9.5-alpine-ram
         environment:
           POSTGRES_USER: pguser
@@ -29,6 +31,8 @@ jobs:
   test_node_9:
     docker:
       - image: node:9
+        environment:
+          PG_USERNAME: pguser
       - image: circleci/postgres:9.5-alpine-ram
         environment:
           POSTGRES_USER: pguser

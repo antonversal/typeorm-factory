@@ -9,12 +9,13 @@ let connection: Connection;
 
 beforeAll(async () => {
   connection = await createConnection({
-    type: "postgres",
+    database: "typeorm-factory-test",
+    entities: [Post, Comment, Author],
     host: "localhost",
     port: 5432,
-    database: "typeorm-factory-test",
     synchronize: true,
-    entities: [Post, Comment, Author],
+    type: "postgres",
+    username: process.env.PG_USERNAME,
   });
   await clean();
 });
