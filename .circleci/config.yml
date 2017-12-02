@@ -22,7 +22,7 @@ jobs:
       - run:
           name: coveralls
           command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-      - store_test_results:
+      - store_artifacts:
           path: test-report.xml
       - store_artifacts:
           path: coverage
@@ -49,7 +49,7 @@ jobs:
       - run:
           name: test
           command: yarn test:ci
-      - store_test_results:
+      - store_artifacts:
           path: test-report.xml
       - store_artifacts:
           path: coverage
