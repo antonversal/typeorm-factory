@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/antonversal/typeorm-factory/tree/master.svg?style=svg)](https://circleci.com/gh/antonversal/typeorm-factory/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/antonversal/typeorm-factory/badge.svg?branch=master)](https://coveralls.io/github/antonversal/typeorm-factory?branch=master)
 
-`typeorm-factory` is a factory library for [typeorm](https://github.com/typeorm/typeorm). It supports all databases that uses typeorm's `Repository`, so it doesn't support `MongoDB`, a pull request are welcome.
+`typeorm-factory` is a factory library for [typeorm](https://github.com/typeorm/typeorm). It supports all databases that uses typeorm's `Repository`, so it doesn't support `MongoDB`, a pull request is welcome.
 
 ## Installation
 
