@@ -8,17 +8,21 @@ import { Sequence } from "./Sequence";
  * Interface for a class
  */
 export interface IConstructable<T> {
-  new(): T;
+  new (): T;
 }
 
 /**
  * Attribute type
  */
-export type Attr<U> = [keyof U,
-  Sequence<U[keyof U]> |
-  AssocManyAttribute<any> |
-  AssocOneAttribute<U[keyof U]> |
-  FactoryAttribute<any>];
+export type Attr<U> = [
+  keyof U,
+
+
+    | Sequence<U[keyof U]>
+    | AssocManyAttribute<any>
+    | AssocOneAttribute<U[keyof U]>
+    | FactoryAttribute<any>
+];
 
 export type Attrs<U> = Array<Attr<U>>;
 
@@ -26,7 +30,6 @@ export type Attrs<U> = Array<Attr<U>>;
  * Factory defines attributes, sequences and associations for an Entity
  */
 export class Factory<T> {
-
   /**
    * typeorm Entity class
    */
@@ -40,13 +43,14 @@ export class Factory<T> {
   private privateRepository: Repository<T>;
 
   /** constructor */
-  constructor(Entity: IConstructable<T>, attrs?: Attrs<T> ) {
+  constructor(Entity: IConstructable<T>, attrs?: Attrs<T>) {
     this.Entity = Entity;
     this.attrs = attrs || [];
   }
 
   private get repository() {
-    this.privateRepository = this.privateRepository || getRepository(this.Entity);
+    this.privateRepository =
+      this.privateRepository || getRepository(this.Entity);
     return this.privateRepository;
   }
 
@@ -54,14 +58,20 @@ export class Factory<T> {
    * Clones current factory definition
    */
   public clone(): Factory<T> {
-    const clonedAttrs = this.attrs.map<Attr<T>>(([name, attr]) => [name, attr.clone()]);
+    const clonedAttrs = this.attrs.map<Attr<T>>(([name, attr]) => [
+      name,
+      attr.clone()
+    ]);
     return new Factory<T>(this.Entity, clonedAttrs);
   }
 
   /**
    * sequence generator
    */
-  public sequence<K extends keyof T>(name: K, sequenceFunction: (i: number) => T[K]): Factory<T> {
+  public sequence<K extends keyof T>(
+    name: K,
+    sequenceFunction: (i: number) => T[K]
+  ): Factory<T> {
     this.attrs.push([name, new Sequence<T[keyof T]>(sequenceFunction)]);
     return this;
   }
@@ -79,7 +89,11 @@ export class Factory<T> {
   /**
    * association generator for one hasMany
    */
-  public assocMany<K extends keyof T>(name: K, factory: Factory<any>, size: number = 1): Factory<T> {
+  public assocMany<K extends keyof T>(
+    name: K,
+    factory: Factory<any>,
+    size: number = 1
+  ): Factory<T> {
     const clonedFactory = this.clone();
     clonedFactory.attrs.push([name, new AssocManyAttribute(factory, size)]);
     return clonedFactory;
@@ -88,9 +102,12 @@ export class Factory<T> {
   /**
    * association generator for one hasMany
    */
-  public assocOne<K extends keyof T>(name: K, factory: Factory<T[K]>): Factory<T> {
+  public assocOne<K extends keyof T>(
+    name: K,
+    factory: Factory<T[K]>
+  ): Factory<T> {
     const clonedFactory = this.clone();
-    clonedFactory.attrs.push([name, new AssocOneAttribute(factory)]);
+    clonedFactory.attrs.push([name, new AssocOneAttribute(factory)] as any);
     return clonedFactory;
   }
 
@@ -131,7 +148,7 @@ export class Factory<T> {
 
   private assignAttrs(obj: T, ignoreKeys: string[]): T {
     return this.attrs.reduce((sum, [key, attribute]) => {
-      if (ignoreKeys.indexOf(key) === -1) {
+      if (ignoreKeys.indexOf(key as string) === -1) {
         sum[key] = attribute.value();
       }
       return sum;
@@ -140,8 +157,8 @@ export class Factory<T> {
 
   private assignAsyncAttrs(obj: T, ignoreKeys: string[]): Promise<T> {
     return this.attrs.reduce((sum, [key, factory]) => {
-      return sum.then(async (s) => {
-        if (ignoreKeys.indexOf(key) === -1) {
+      return sum.then(async s => {
+        if (ignoreKeys.indexOf(key as string) === -1) {
           s[key] = await factory.asyncValue();
         }
         return s;
