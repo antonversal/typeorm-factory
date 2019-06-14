@@ -1,8 +1,8 @@
-import { getRepository, Repository } from "typeorm";
-import { AssocManyAttribute } from "./AssocManyAttribute";
-import { AssocOneAttribute } from "./AssocOneAttribute";
-import { FactoryAttribute } from "./FactoryAttribute";
-import { Sequence } from "./Sequence";
+import { getRepository, Repository } from 'typeorm';
+import { AssocManyAttribute } from './AssocManyAttribute';
+import { AssocOneAttribute } from './AssocOneAttribute';
+import { FactoryAttribute } from './FactoryAttribute';
+import { Sequence } from './Sequence';
 
 /**
  * Interface for a class
@@ -46,12 +46,7 @@ export class Factory<T> {
   constructor(Entity: IConstructable<T>, attrs?: Attrs<T>) {
     this.Entity = Entity;
     this.attrs = attrs || [];
-  }
-
-  private get repository() {
-    this.privateRepository =
-      this.privateRepository || getRepository(this.Entity);
-    return this.privateRepository;
+    this.privateRepository = getRepository(this.Entity);
   }
 
   /**
@@ -117,7 +112,7 @@ export class Factory<T> {
   public build(attributes: Partial<T> = {}): T {
     const ignoreKeys = Object.keys(attributes);
     const obj = this.assignAttrs(new this.Entity(), ignoreKeys);
-    return this.repository.merge(obj, attributes as any);
+    return this.privateRepository.merge(obj, attributes as any);
   }
 
   /**
@@ -133,8 +128,8 @@ export class Factory<T> {
   public async create(attributes: Partial<T> = {}): Promise<T> {
     const ignoreKeys = Object.keys(attributes);
     const obj = await this.assignAsyncAttrs(new this.Entity(), ignoreKeys);
-    const objWithAttrs = this.repository.merge(obj, attributes as any);
-    return this.repository.save(objWithAttrs as any);
+    const objWithAttrs = this.privateRepository.merge(obj, attributes as any);
+    return this.privateRepository.save(objWithAttrs as any);
   }
 
   /**

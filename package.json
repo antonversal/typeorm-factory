@@ -27,25 +27,12 @@
     "test:ci": "jest --ci --testResultsProcessor=\"./node_modules/jest-junit-reporter\" --coverage",
     "test": "jest",
     "test:watch": "yarn test --watch",
-    "prepare": "yarn build",
-    "precommit": "tsc --noEmit && lint-staged"
+    "prepare": "yarn build"
   },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/fixtures/",
-      "/support/"
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc --noEmit && lint-staged"
+    }
   },
   "lint-staged": {
     "server/**/*.ts": [
@@ -58,23 +45,24 @@
     ]
   },
   "peerDependencies": {
-    "typeorm": "^0.1.6"
+    "typeorm": "^0.2.18"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.2",
-    "@types/node": "^10.9.4",
-    "coveralls": "^3.0.2",
-    "husky": "^0.14.3",
-    "jest-cli": "^23.6.0",
+    "@types/jest": "^24.0.14",
+    "@types/node": "^12.0.8",
+    "coveralls": "^3.0.4",
+    "husky": "^2.4.1",
+    "jest-cli": "^24.8.0",
     "jest-junit-reporter": "^1.1.0",
-    "lint-staged": "^7.2.2",
-    "pg": "^7.4.3",
-    "prettier": "^1.14.2",
-    "reflect-metadata": "^0.1.12",
-    "ts-jest": "^23.1.4",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
+    "jest-watch-typeahead": "^0.3.1",
+    "lint-staged": "^8.2.1",
+    "pg": "^7.11.0",
+    "prettier": "^1.18.2",
+    "reflect-metadata": "^0.1.13",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0",
     "typeorm": "^0.2.7",
-    "typescript": "^3.0.3"
+    "typescript": "^3.5.2"
   }
 }
