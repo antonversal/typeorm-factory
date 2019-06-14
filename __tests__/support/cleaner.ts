@@ -1,16 +1,7 @@
-import { EntityManager, getConnection } from "typeorm";
+import { getConnection } from 'typeorm';
 
-const clearTable = (manager: EntityManager, name: string) =>
-  manager
-    .createQueryBuilder()
-    .delete()
-    .from(name)
-    .execute();
-
-export const clean = async () => {
-  const conn = getConnection();
-  await conn.transaction(async (manager) => {
-    await clearTable(manager, "post");
-    await clearTable(manager, "comment");
-  });
+export const clean = () => {
+  const { manager } = getConnection();
+  const names = ['comment', 'post'];
+  return manager.query(names.map(name => `DELETE FROM ${name};`).join('\n'));
 };

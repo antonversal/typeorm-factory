@@ -40,13 +40,18 @@ export class Factory<T> {
    */
   public attrs: Attrs<T>;
 
-  private privateRepository: Repository<T>;
+  private privateRepository: Repository<T> | undefined = undefined;
 
   /** constructor */
   constructor(Entity: IConstructable<T>, attrs?: Attrs<T>) {
     this.Entity = Entity;
     this.attrs = attrs || [];
-    this.privateRepository = getRepository(this.Entity);
+  }
+
+  private get repository() {
+    this.privateRepository =
+      this.privateRepository || getRepository(this.Entity);
+    return this.privateRepository;
   }
 
   /**
@@ -112,7 +117,7 @@ export class Factory<T> {
   public build(attributes: Partial<T> = {}): T {
     const ignoreKeys = Object.keys(attributes);
     const obj = this.assignAttrs(new this.Entity(), ignoreKeys);
-    return this.privateRepository.merge(obj, attributes as any);
+    return this.repository.merge(obj, attributes as any);
   }
 
   /**
@@ -128,8 +133,8 @@ export class Factory<T> {
   public async create(attributes: Partial<T> = {}): Promise<T> {
     const ignoreKeys = Object.keys(attributes);
     const obj = await this.assignAsyncAttrs(new this.Entity(), ignoreKeys);
-    const objWithAttrs = this.privateRepository.merge(obj, attributes as any);
-    return this.privateRepository.save(objWithAttrs as any);
+    const objWithAttrs = this.repository.merge(obj, attributes as any);
+    return this.repository.save(objWithAttrs as any);
   }
 
   /**
