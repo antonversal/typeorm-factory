@@ -7,9 +7,7 @@ import { Sequence } from './Sequence';
 /**
  * Interface for a class
  */
-export interface IConstructable<T> {
-  new (): T;
-}
+export type IConstructable<T> = new () => T;
 
 /**
  * Attribute type
@@ -117,33 +115,35 @@ export class Factory<T> {
   public build(attributes: Partial<T> = {}): T {
     const ignoreKeys = Object.keys(attributes);
     const obj = this.assignAttrs(new this.Entity(), ignoreKeys);
-    return this.repository.merge(obj, attributes as any);
+    return this.repository.merge(obj, attributes);
   }
 
   /**
    * builds a list instances of Entity
    */
-  public buildList(size: number): T[] {
-    return Array.from({ length: size }, () => this.build());
+  public buildList(size: number, attributes: Partial<T> = {}): T[] {
+    return Array.from({ length: size }, () => this.build(attributes));
   }
 
   /**
    * creates an Entity
    */
   public async create(attributes: Partial<T> = {}): Promise<T> {
-    const ignoreKeys = Object.keys(attributes);
-    const obj = await this.assignAsyncAttrs(new this.Entity(), ignoreKeys);
-    const objWithAttrs = this.repository.merge(obj, attributes as any);
-    return this.repository.save(objWithAttrs as any);
+    const entity = await this.createEntity(attributes);
+    return this.repository.save(entity);
   }
 
   /**
    * creates a list of Entities
    */
-  public async createList(size: number): Promise<T[]> {
-    const objects = Array.from({ length: size }, () => this.create());
-    const list = await Promise.all(objects);
-    return list;
+  public async createList(
+    size: number,
+    attributes: Partial<T> = {}
+  ): Promise<T[]> {
+    const entities = await Promise.all(
+      Array.from({ length: size }, () => this.createEntity(attributes))
+    );
+    return this.repository.save(entities);
   }
 
   private assignAttrs(obj: T, ignoreKeys: string[]): T {
@@ -164,5 +164,11 @@ export class Factory<T> {
         return s;
       });
     }, Promise.resolve(obj));
+  }
+
+  private async createEntity(attributes: Partial<T> = {}): Promise<T> {
+    const ignoreKeys = Object.keys(attributes);
+    const obj = await this.assignAsyncAttrs(new this.Entity(), ignoreKeys);
+    return this.repository.merge(obj, attributes);
   }
 }

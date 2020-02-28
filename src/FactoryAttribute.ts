@@ -1,4 +1,3 @@
-
 export class FactoryAttribute<T> {
   private readonly attrValue: T;
 
