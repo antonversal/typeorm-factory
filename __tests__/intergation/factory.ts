@@ -86,12 +86,28 @@ describe('Factory Test', () => {
       const createdObjects = await PostFactory.createList(3);
       expect(createdObjects.length).toEqual(3);
     });
+
+    it('accepts attributes', async () => {
+      const createdObjects = await PostFactory.createList(2, {
+        postType: PostType.IMAGE
+      });
+      expect(createdObjects[0].postType).toEqual(PostType.IMAGE);
+      expect(createdObjects[1].postType).toEqual(PostType.IMAGE);
+    });
   });
 
   describe('buildList', () => {
     it('builds an array of objects', async () => {
       const createdObjects = await PostFactory.buildList(3);
       expect(createdObjects.length).toEqual(3);
+    });
+
+    it('accepts attributes', async () => {
+      const createdObjects = await PostFactory.buildList(2, {
+        postType: PostType.IMAGE
+      });
+      expect(createdObjects[0].postType).toEqual(PostType.IMAGE);
+      expect(createdObjects[1].postType).toEqual(PostType.IMAGE);
     });
   });
 

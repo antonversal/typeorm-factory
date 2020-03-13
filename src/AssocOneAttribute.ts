@@ -1,4 +1,4 @@
-import { Factory } from "./Factory";
+import { Factory } from './Factory';
 
 export class AssocOneAttribute<T> {
   private readonly factory: Factory<T>;
