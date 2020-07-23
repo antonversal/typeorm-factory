@@ -59,6 +59,7 @@
     "pg": "^7.11.0",
     "prettier": "^1.18.2",
     "reflect-metadata": "^0.1.13",
+    "sqlite3": "^5.0.0",
     "ts-jest": "^24.0.2",
     "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0",

@@ -5,30 +5,26 @@ import { Comment } from '../fixtures/entity/Comment';
 import { Post, PostType } from '../fixtures/entity/Post';
 import { clean } from '../support/cleaner';
 
-let connection: Connection;
-
-beforeAll(async () => {
-  connection = await createConnection({
-    database: 'typeorm-factory-test',
-    entities: [Post, Comment, Author],
-    host: 'localhost',
-    port: 5432,
-    synchronize: true,
-    type: 'postgres',
-    username: process.env.PG_USERNAME
-  });
-  await clean();
-});
-
-afterAll(() => connection.close());
-
-afterEach(() => clean);
-
 describe('Factory Test', () => {
+  let connection: Connection;
   let PostFactory: Factory<Post>;
   let CommentFactory: Factory<Comment>;
   let AuthorFactory: Factory<Author>;
   let MostLikedPost: Factory<Post>;
+
+  beforeAll(async () => {
+    connection = await createConnection({
+      database: ':memory:',
+      entities: [Post, Comment, Author],
+      synchronize: true,
+      type: 'sqlite'
+    });
+    await clean();
+  });
+
+  afterAll(() => connection.close());
+
+  afterEach(() => clean);
 
   beforeEach(() => {
     CommentFactory = new Factory(Comment)
@@ -139,5 +135,37 @@ describe('Factory Test', () => {
   it('accepts attributes', () => {
     const object = PostFactory.build({ title: 'new title' });
     expect(object.title).toEqual('new title');
+  });
+});
+
+describe('Factory on named connection', () => {
+  let connection: Connection;
+  const connectionName = 'second';
+  let AuthorFactory: Factory<Author>;
+
+  beforeAll(async () => {
+    connection = await createConnection({
+      name: connectionName,
+      database: ':memory:',
+      entities: [Post, Comment, Author],
+      synchronize: true,
+      type: 'sqlite'
+    });
+    await clean(connectionName);
+  });
+
+  afterAll(() => connection.close());
+
+  afterEach(() => clean(connectionName));
+
+  beforeEach(() => {
+    AuthorFactory = new Factory(Author, connectionName)
+      .sequence('firstName', i => `John ${i}`)
+      .sequence('lastName', i => `Doe ${i}`);
+  });
+
+  it('works on named connections', async () => {
+    const author = await AuthorFactory.create({ firstName: 'Albert' });
+    expect(author.firstName).toEqual('Albert');
   });
 });
