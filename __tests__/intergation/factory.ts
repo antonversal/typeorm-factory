@@ -45,7 +45,8 @@ describe('Factory Test', () => {
       .attr('likesCount', 10)
       .attr('postType', PostType.TEXT)
       .assocMany('comments', CommentFactory, 2)
-      .assocOne('author', AuthorFactory);
+      .assocOne('author', AuthorFactory)
+      .assocOne('coAuthor', AuthorFactory);
 
     MostLikedPost = PostFactory.attr('likesCount', 10000);
   });
@@ -125,14 +126,30 @@ describe('Factory Test', () => {
   });
 
   describe('assocOne', () => {
-    it('builds association', () => {
-      const object = PostFactory.build();
-      expect(object.author).toBeInstanceOf(Author);
+    describe('with eagerly loaded attribute', () => {
+      it('builds association', () => {
+        const object = PostFactory.build();
+        expect(object.author).toBeInstanceOf(Author);
+      });
+
+      it('creates association', async () => {
+        const object = await PostFactory.create();
+        expect(object.author.id).toBeDefined();
+      });
     });
 
-    it('creates association', async () => {
-      const object = await PostFactory.create();
-      expect(object.author.id).toBeDefined();
+    describe('with lazily loaded attribute', () => {
+      it('builds association', async () => {
+        const object = PostFactory.build();
+        const coAuthor = await object.coAuthor;
+        expect(coAuthor).toBeInstanceOf(Author);
+      });
+
+      it('creates association', async () => {
+        const object = await PostFactory.create();
+        const coAuthor = await object.coAuthor;
+        expect(coAuthor.id).toBeDefined();
+      });
     });
   });
 
