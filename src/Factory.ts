@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { DeepPartial, getRepository, Repository } from 'typeorm';
 import { AssocManyAttribute } from './AssocManyAttribute';
 import { AssocOneAttribute } from './AssocOneAttribute';
 import { FactoryAttribute } from './FactoryAttribute';
@@ -112,7 +112,7 @@ export class Factory<T> {
   /**
    * builds an instance of Entity
    */
-  public build(attributes: Partial<T> = {}): T {
+  public build(attributes: DeepPartial<T> = {}): T {
     const ignoreKeys = Object.keys(attributes);
     const obj = this.assignAttrs(new this.Entity(), ignoreKeys);
     return this.repository.merge(obj, attributes);
@@ -121,14 +121,14 @@ export class Factory<T> {
   /**
    * builds a list instances of Entity
    */
-  public buildList(size: number, attributes: Partial<T> = {}): T[] {
+  public buildList(size: number, attributes: DeepPartial<T> = {}): T[] {
     return Array.from({ length: size }, () => this.build(attributes));
   }
 
   /**
    * creates an Entity
    */
-  public async create(attributes: Partial<T> = {}): Promise<T> {
+  public async create(attributes: DeepPartial<T> = {}): Promise<T> {
     const entity = await this.createEntity(attributes);
     return this.repository.save(entity);
   }
@@ -138,7 +138,7 @@ export class Factory<T> {
    */
   public async createList(
     size: number,
-    attributes: Partial<T> = {}
+    attributes: DeepPartial<T> = {}
   ): Promise<T[]> {
     const entities = await Promise.all(
       Array.from({ length: size }, () => this.createEntity(attributes))
@@ -166,7 +166,7 @@ export class Factory<T> {
     }, Promise.resolve(obj));
   }
 
-  private async createEntity(attributes: Partial<T> = {}): Promise<T> {
+  private async createEntity(attributes: DeepPartial<T> = {}): Promise<T> {
     const ignoreKeys = Object.keys(attributes);
     const obj = await this.assignAsyncAttrs(new this.Entity(), ignoreKeys);
     return this.repository.merge(obj, attributes);
