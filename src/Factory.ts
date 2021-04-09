@@ -102,7 +102,7 @@ export class Factory<T> {
    */
   public assocOne<K extends keyof T>(
     name: K,
-    factory: Factory<T[K]>
+    factory: Factory<T[K] extends PromiseLike<infer U> ? U : T[K]>
   ): Factory<T> {
     const clonedFactory = this.clone();
     clonedFactory.attrs.push([name, new AssocOneAttribute(factory)] as any);

@@ -30,4 +30,7 @@ export class Post {
 
   @ManyToOne(() => Author, (author) => author.posts)
   public author: Author;
+
+  @ManyToOne(() => Author)
+  public coAuthor: Promise<Author>;
 }
